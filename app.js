@@ -1,15 +1,13 @@
+const dbConnect = require('./mongodb')
 const express = require('express');
 const app = express();
-const dbConnect = require('./mongodb')
-
 app.use(express.json())
 
 app.post('/', async (req,resp)=> {
-
-    //user datab
-   let data = await dbConnect("userprofile", req.body);   // users
-   console.log(data)
-   console.log(req.body) //** 
+   const db = await dbConnect();
+   const userprofile = db.collection('userprofile')
+   const data = await userprofile.insertOne({"name":"ajay"})
+   console.log(data) //** 
    resp.json({
     data:data})
 })
@@ -20,18 +18,40 @@ app.post('/userprofile', async (req,resp)=> {
 console.log(data)
 console.log(req.body)  //** 
 resp.json({
-    data:data
-})
-// average of all user age using Get method....
-
-
-//************************************************************** */
-
-//resp.status(200).json({age: getAge})
-
+    data:data})
 
 })
 
 
 
-app.listen(4000, ()=>console.log("server is up"));
+app.get('/userprofile', async (req,resp)=> {
+    console.log("ghftyfytfytfyf") 
+const db = await dbConnect();
+   const userprofile = db.collection('userprofile')
+   console.log(userprofile);
+   const data = await userprofile.find({ })
+   console.log(data)
+
+var dbo = db.db("userprofile");
+const findResult = await db.collection("userprofile").find({}).toArray();
+console.log('Found documents =>', findResult);
+
+
+resp.json({
+    data:data})
+
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
